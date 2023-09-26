@@ -12,22 +12,45 @@
     Sports Scores/Teams
     Passengers/Travel
  */
-
+import java.util.Scanner;
 import java.util.LinkedList;
+
 public class challenge {
-    private LinkedList<String> teams = new LinkedList<String>();
-    
-    public void addTeam(String team) {
+    public static LinkedList<String> teams = new LinkedList<String>();
+
+    public static void addTeam(String team) {
         teams.add(team);
     }
-    public void removeTeam(String team) {
+    public static void removeTeam(String team) {
         teams.remove(team);
     }
-    public void displayTeams() {
+    public static void displayTeams() {
         System.out.println("Current Team List is: " + teams);
     }
+
     public static void main(String[] args) {
-        
+        Scanner input = new Scanner(System.in);
+        System.out.println("What would you like to do?");
+        System.out.println("Type 'a' to add, 'r' to remove, or 'q' to quit.");
+        String keyboard = input.next().toLowerCase();
+        while(true) {
+            if (keyboard.equals("a")) {
+                System.out.println("What's the team you would like to add?");
+                String team = input.next();
+                addTeam(team);
+            } else if (keyboard.equals("r")) {
+                System.out.println("What's the team you would like to remove?");
+                String team = input.next();
+                removeTeam(team);
+            } else if (keyboard.equals("q")) {
+                break;
+            }
+            displayTeams();
+            System.out.println("Type 'a' to add, 'r' to remove, or 'q' to quit.");
+            keyboard = input.next().toLowerCase();
+        }
+
+
     }
     
 }
