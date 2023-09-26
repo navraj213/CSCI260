@@ -14,9 +14,18 @@
  */
 
 import java.util.LinkedList;
-
 public class challenge {
-
+    private LinkedList<String> teams = new LinkedList<String>();
+    
+    public void addTeam(String team) {
+        teams.add(team);
+    }
+    public void removeTeam(String team) {
+        teams.remove(team);
+    }
+    public void displayTeams() {
+        System.out.println("Current Team List is: " + teams);
+    }
     public static void main(String[] args) {
         
     }
