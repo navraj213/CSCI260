@@ -6,5 +6,5 @@ number generation and element addition process.
  */
 
 public class challenge2 {
-    
+    i
 }
