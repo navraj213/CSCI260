@@ -19,7 +19,7 @@ public class BubbleSort {
         }
     }
 
-    private static void bubbleSort(int[] intArray) {
+    public static void bubbleSort(int[] intArray) {
         int n = intArray.length;
         int temp = 0;
         for(int i=0; i < n; i++){

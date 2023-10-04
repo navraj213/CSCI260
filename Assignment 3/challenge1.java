@@ -1,17 +1,10 @@
-/*
- * Programming Challenge 1:
-Create a Java program that collects numeric data from a user (10 values minimum), sorts that data using a
-bubble sort algorithm in ascending order, and then displays the resulting ordered set
- */
-import org.w3c.dom.ls.LSOutput;
-
 import java.util.*;
 
 public class challenge1 {
     private static void bubbleSort(ArrayList<Integer> intArray) {
         Integer temp = 0;
         for (int i = 0; i < intArray.size(); i++) {
-            for (int j = 1; j < (intArray.size() - i; j++))
+            for (int j = 1; j < (intArray.size() - i); j++)
             {
                 if (intArray.get(j - 1) > intArray.get(j))
                 {
@@ -23,21 +16,21 @@ public class challenge1 {
         }
     }
     public static void main(String[] args) {
-        ArrayList<Integer> nums = new ArrayList<integer>();
+        ArrayList<Integer> nums = new ArrayList<Integer>();
         Scanner input = new Scanner(System.in);
         while(true)
         {
             System.out.println("Enter your integer (Type q to quit)");
             String keyboard = input.next();
-            try(Integer.parseInteger(keyboard))
-            {
-                nums.add(Integer.parseInteger(keyboard));
+            try {
+                nums.add(Integer.parseInt(keyboard));
             }
             catch(NumberFormatException e)
             {
                 break;
             }
         }
+        input.close();
         System.out.println();
         System.out.println();
         System.out.println("Current Array: " + nums);
