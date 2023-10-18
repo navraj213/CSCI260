@@ -1,3 +1,6 @@
+import java.util.Scanner;
+import java.util.LinkedList;
+import java.util.Queue;
 public class challenge5 {
     /*
      * Programming Challenge 5b:
@@ -27,7 +30,34 @@ FORMAT OR ORDER IS NOT REQUIRED FOR THIS ASSIGNMENT
 
      */
 
-     public static void main(String[] args) {
-        
+     public static void main(String[] args)
+     {
+         Queue<Double> queue = new LinkedList<Double>();
+         Scanner input = new Scanner(System.in);
+         System.out.println("Enter Home Value");
+         int homeValue = input.nextInt();
+         System.out.println("Enter Down Payment");
+         int downPayment = input.nextInt();
+         System.out.println("Enter Interest Rate");
+         double interestRate = input.nextDouble();
+         System.out.println("Enter Monthly Principle");
+         int monthlyPrinciple = input.nextInt();
+
+         int newHomeValue = homeValue - downPayment;
+         double interestPayment = interestRate * monthlyPrinciple;
+
+
+
+
+         for(int i=0; i<12; i++)
+         {
+             double monthlyI=(interestRate/12/100)*newHomeValue;
+             monthlyI+=monthlyPrinciple;
+             queue.add(monthlyI);
+             newHomeValue-=monthlyI+monthlyPrinciple;
+         }
+         System.out.println(queue);
+
+
      }
 }
