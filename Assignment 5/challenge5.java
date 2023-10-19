@@ -46,9 +46,6 @@ FORMAT OR ORDER IS NOT REQUIRED FOR THIS ASSIGNMENT
          int newHomeValue = homeValue - downPayment;
          double interestPayment = interestRate * monthlyPrinciple;
 
-
-
-
          for(int i=0; i<12; i++)
          {
              double monthlyI=(interestRate/12/100)*newHomeValue;
@@ -57,7 +54,5 @@ FORMAT OR ORDER IS NOT REQUIRED FOR THIS ASSIGNMENT
              newHomeValue-=monthlyI+monthlyPrinciple;
          }
          System.out.println(queue);
-
-
      }
 }
