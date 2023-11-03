@@ -38,6 +38,6 @@ public class challenge4 {
 
         System.out.println("Total Balance: " + total);
 
-
+        input.close();
     }
 }

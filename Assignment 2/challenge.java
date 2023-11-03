@@ -50,7 +50,7 @@ public class challenge {
             keyboard = input.next().toLowerCase();
         }
 
-
+        input.close();
     }
     
 }

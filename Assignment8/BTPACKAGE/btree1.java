@@ -48,5 +48,6 @@ public class btree1
         System.out.println("\n\nDo you want to continue (Type y or n) \n");
         ch = scan.next().charAt(0);
         } while (ch == 'Y'|| ch == 'y');
+        scan.close();
     }
 }

@@ -34,7 +34,7 @@ public class btChallenge {
             a specific address value in the tree. Include a confirmation notification if the data is
             found in the system.
          */
-        input = new Scanner(System.in);
+        //input = new Scanner(System.in);
         while(true) {
             System.out.println("Enter address to search for (enter any char to exit): ");
             if(input.hasNextInt()) {
@@ -50,5 +50,6 @@ public class btChallenge {
         }
 
         System.out.println("Exiting...");
+        input.close();
     }
 }

@@ -1,6 +1,5 @@
 package Assignment8.BTPACKAGE;
 
-import java.util.Scanner;
 /* Class BT */
 class BT
 {

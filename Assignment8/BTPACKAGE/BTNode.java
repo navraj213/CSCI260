@@ -1,6 +1,4 @@
 package Assignment8.BTPACKAGE;
-
-import java.util.Scanner;
 /* Class BTNode */
 class BTNode
 {
