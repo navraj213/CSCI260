@@ -2,7 +2,7 @@ package Garage;
 
 import java.util.LinkedList;
 
-public class part {
+public class part implements Cloneable {
     public String brand;
     public String description;
     public int modelNumber;
@@ -49,6 +49,11 @@ public class part {
         int result = this.uniqueID.hashCode();
         result = 31 * result + this.modelNumber;
         return result;
+    }
+
+    @Override
+    public part clone() throws CloneNotSupportedException {
+        return (part)super.clone();
     }
     
 }

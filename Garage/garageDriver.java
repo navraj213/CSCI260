@@ -4,6 +4,7 @@ import java.util.*;
 
 public class garageDriver {
     public static HashSet<part> inventory = new HashSet<part>();
+    //public static borrowed;////////
 
     public static void getOption() {
         clearScreen();
@@ -141,9 +142,25 @@ public class garageDriver {
             return;
         }
         else {
-            inventory.remove(currPart);
             System.out.println("Enter new details: ");
-            addPart();
+            System.out.println("Enter the " + "\033[31m" + "description" + "\033[0m" + " of the part: ");
+            input.nextLine();
+            String description = input.nextLine();
+            System.out.println("Enter the " + "\033[31m" + "quantity" + "\033[0m" + " of the part: ");
+            int quantity = input.nextInt();
+            System.out.println("Enter the " + "\033[31m" + "location" + "\033[0m" + " of the part: ");
+            input.nextLine();
+            String location = input.nextLine();
+
+            for (part p : inventory) {
+                if (p.equals(currPart)) {
+                    p.description = description;
+                    p.quantity = quantity;
+                    p.location = location;
+                    System.out.println("\033[32m" + "Part Updated" + "\033[0m");
+                    return;
+                }
+            }
         }
     }
 
@@ -151,9 +168,11 @@ public class garageDriver {
         return;
     }
     public static void main(String[] args) {
-        inventory.add(new part("bmw", "taillight", 123, 1, "A1"));
+        part p1 = (new part("bmw", "taillight", 123, 1, "A1"));
+        inventory.add(p1);
         while (true) {
             getOption();
         }
+
     }
 }
