@@ -23,7 +23,7 @@ public class partCopy {
     }
 
     public String toString() {
-        return this.uniqueID + " " + this.reserverName + " " + this.isKeeping;
+        return "\033[31m" + this.uniqueID + " \033[32m" + this.reserverName + " \033[34m" + this.isKeeping + "\033[0m";
     }
 
     public boolean equals(Object obj) {

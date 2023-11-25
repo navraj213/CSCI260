@@ -10,15 +10,15 @@ public class garageDriver {
         clearScreen();
         System.out.println("\033[32m" + "Welcome to the Garage Inventory System\n" + "\033[0m");
         System.out.println("Please select an option:");
-        System.out.println("\033[31m" + "1. " + "\033[0m" + "Add a part");
-        System.out.println("\033[31m" + "2. " + "\033[0m" + "Remove a part");
-        System.out.println("\033[31m" + "3. " + "\033[0m" + "Update a part");
-        System.out.println("\033[31m" + "4. " + "\033[0m" + "Borrow a part");
-        System.out.println("\033[31m" + "5. " + "\033[0m" + "Return a part");
-        System.out.println("\033[31m" + "6. " + "\033[0m" + "List all parts");
-        System.out.println("\033[31m" + "7. " + "\033[0m" + "List all borrowed parts");
-        System.out.println("\033[31m" + "8. " + "\033[0m" + "List all parts in a location");
-        System.out.println("\033[31m" + "9. " + "\033[0m" + "List all parts of a brand");
+        System.out.println("\033[31m" + " 1. " + "\033[0m" + "Add a part");
+        System.out.println("\033[31m" + " 2. " + "\033[0m" + "Remove a part");
+        System.out.println("\033[31m" + " 3. " + "\033[0m" + "Update a part");
+        System.out.println("\033[31m" + " 4. " + "\033[0m" + "Borrow a part");
+        System.out.println("\033[31m" + " 5. " + "\033[0m" + "Return a part");
+        System.out.println("\033[31m" + " 6. " + "\033[0m" + "List all parts");
+        System.out.println("\033[31m" + " 7. " + "\033[0m" + "List all borrowed parts");
+        System.out.println("\033[31m" + " 8. " + "\033[0m" + "List all parts in a location");
+        System.out.println("\033[31m" + " 9. " + "\033[0m" + "List all parts of a brand");
         System.out.println("\033[31m" + "10. " + "\033[0m" + "List Quantity of a part");
         System.out.println("\033[31m" + "11. " + "\033[0m" + "Exit");
 
@@ -63,6 +63,9 @@ public class garageDriver {
                 for (part p : inventory) {
                     System.out.println(p);
                 }
+                break;
+            case 7:
+                listAllBorrowed();
                 break;
             default:
                 break;
@@ -307,6 +310,30 @@ public class garageDriver {
                 }
             }
         }
+    }
+
+    public static void listAllBorrowed() {
+        boolean didPrint = false;
+        for(part p : inventory) {
+            if(p.numBorrowed > 0) {
+                partCopy mPartCopy = new partCopy(p.uniqueID, "", false);
+                BTnode myBTNODE = binaryTree.search(p.brand.toUpperCase());
+                ArrayList<LinkedList<partCopy>> details = (ArrayList<LinkedList<partCopy>>) myBTNODE.data[1];
+                for(LinkedList<partCopy> partCopies : details) {
+                    if(partCopies.getFirst().equals(mPartCopy)){
+                        System.out.println("Part: \033[31m" + mPartCopy.getBrand() + "\033[0m-\033[33m" + p.uniqueID.substring(mPartCopy.getBrand().length()) + "\033[0m is borrowed by:");
+                        for(int i = 1; i < partCopies.size(); i++) {
+                            System.out.println("\033[3m" + partCopies.get(i).reserverName + "\033[0m");
+                        }
+                    }
+                }
+                didPrint = true;
+            }
+        }
+        if(!didPrint) {
+            System.out.println("\033[31m" + "No parts are borrowed yet" + "\033[0m");
+        }
+        System.out.println();
     }
 
     public static void main(String[] args) {
