@@ -95,6 +95,31 @@ public class garageDriver {
             case 9:
                 listAllPartsOfBrand();
                 break;
+            case 10:
+                System.out.println("Enter the " + "\033[31m" + "brand" + "\033[0m" + " of the part: ");
+                input.nextLine();
+                String brand2 = input.nextLine().strip();
+
+                System.out.println("Enter the " + "\033[31m" + "model number" + "\033[0m" + " of the part: ");
+                int modelNumber2 = input.nextInt();
+
+                part currPart2 = new part(brand2, "", modelNumber2, 0, "");
+
+                if (!inventory.contains(currPart2)) {
+                    System.out.println("\033[31m" + "Part does not exist"+ "\033[0m");
+                    break;
+                }
+                else {
+                    for (part p : inventory) {
+                        if (p.equals(currPart2)) {
+                            System.out.println("Part: " + p + "\033[32m" + "\n\nQuantity of Part: " + "\033[0m");
+                            System.out.println(p.quantity);
+                            break;
+                        }
+                    }
+                }
+                System.out.println();
+                break;
             default:
                 break;
         }
