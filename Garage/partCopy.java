@@ -22,6 +22,10 @@ public class partCopy {
         return brand;
     }
 
+    public String toString() {
+        return this.uniqueID + " " + this.reserverName + " " + this.isKeeping;
+    }
+
     //this.uniqueID.hashCode();
 
 }

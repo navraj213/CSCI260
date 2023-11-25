@@ -4,7 +4,7 @@ import java.util.*;
 
 public class garageDriver {
     public static HashSet<part> inventory = new HashSet<part>();
-    //public static borrowed;////////
+    public static BT binaryTree = new BT();
 
     public static void getOption() {
         clearScreen();
@@ -52,6 +52,10 @@ public class garageDriver {
                 break;
             case 4:
                 borrowPart();
+                break;
+            case 5:
+                System.out.println(binaryTree.countNodes());
+                binaryTree.printTree();
                 break;
             default:
                 break;
@@ -104,6 +108,17 @@ public class garageDriver {
 
         part newPart = new part(brand, description, modelNumber, quantity, location);
         inventory.add(newPart);
+
+        BTnode myBTNODE;
+        if(!binaryTree.doesExist(newPart.brand)) {
+            binaryTree.insert(newPart.brand, new ArrayList<LinkedList<partCopy>>());
+        }
+        myBTNODE = binaryTree.search(newPart.brand);
+        ArrayList<LinkedList<partCopy>> details = (ArrayList<LinkedList<partCopy>>) myBTNODE.data[1];
+        details.add(new LinkedList<partCopy>());
+        LinkedList<partCopy> addCopy = new LinkedList<partCopy>();
+        addCopy.add(new partCopy(newPart.uniqueID, "", false));
+        details.set(details.size() - 1, addCopy);
 
         System.out.println("\033[32m" + "Part Added" + "\033[0m");
     }
@@ -168,11 +183,25 @@ public class garageDriver {
         return;
     }
     public static void main(String[] args) {
-        part p1 = (new part("bmw", "taillight", 123, 1, "A1"));
-        inventory.add(p1);
+        //part p1 = (new part("bmw", "taillight", 123, 1, "A1"));
+        //inventory.add(p1);
         while (true) {
             getOption();
         }
+        // partCopy myPartCopy = new partCopy("bmw123", "nav", true);
+
+        // BT bt = new BT();
+        // bt.insert("bmw", new ArrayList<partCopy>());
+        // bt.insert("bmw", new ArrayList<partCopy>());
+
+        // BTnode myBTNODE = bt.search("bmw");
+        // ((ArrayList<partCopy>) myBTNODE.data[1]).add(myPartCopy);
+
+        
+
+
+        // System.out.println( bt.search("bmw").getDataDetails() );
+
 
     }
 }
