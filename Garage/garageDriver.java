@@ -92,6 +92,9 @@ public class garageDriver {
                 }
                 System.out.println();
                 break;
+            case 9:
+                listAllPartsOfBrand();
+                break;
             default:
                 break;
         }
@@ -361,6 +364,24 @@ public class garageDriver {
         }
         if(!didPrint) {
             System.out.println("\033[31m" + "No parts are borrowed yet" + "\033[0m");
+        }
+        System.out.println();
+    }
+
+    public static void listAllPartsOfBrand() {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Enter the " + "\033[31m" + "brand" + "\033[0m" + " of the part: ");
+        String brand = input.nextLine().strip().toUpperCase();
+
+        BTnode myBTNODE = binaryTree.search(brand);
+        if(myBTNODE == null) {
+            System.out.println("\033[31m" + "Brand does not exist" + "\033[0m");
+            return;
+        }
+        ArrayList<LinkedList<partCopy>> details = (ArrayList<LinkedList<partCopy>>) myBTNODE.data[1];
+        System.out.println("Parts of brand: \033[31m" + brand + "\033[0m");
+        for(LinkedList<partCopy> partCopies : details) {
+            System.out.println("\033[31m" + brand + "\033[0m-\033[33m" + partCopies.getFirst().uniqueID.substring(brand.length()) + "\033[0m");
         }
         System.out.println();
     }
