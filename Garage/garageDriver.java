@@ -56,6 +56,14 @@ public class garageDriver {
             case 5:
                 returnPart();
                 break;
+            case 6:
+                System.out.println("\033[31m" + "BRAND" + "\033[0m" + "-" + "\033[33m" + "MODEL#" + "\033[0m" + " " + "DESCRIPTION"
+                    + " |\033[36m " + "QUANTITY" + "\033[35m " + "LOCATION" + "\033[0m");
+                System.out.println("\033[32m" + "All Parts:" + "\033[0m\n");
+                for (part p : inventory) {
+                    System.out.println(p);
+                }
+                break;
             default:
                 break;
         }

@@ -55,5 +55,11 @@ public class part implements Cloneable {
     public part clone() throws CloneNotSupportedException {
         return (part)super.clone();
     }
+
+    @Override
+    public String toString() {
+        return "\033[31m" + this.brand + "\033[0m" + "-" + "\033[33m" + this.modelNumber + "\033[0m" + " " + this.description.toUpperCase()
+                + " |\033[36m " + this.quantity + "\033[35m " + this.location + "\033[0m";
+    }
     
 }
