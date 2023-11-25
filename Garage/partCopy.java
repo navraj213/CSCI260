@@ -26,6 +26,17 @@ public class partCopy {
         return this.uniqueID + " " + this.reserverName + " " + this.isKeeping;
     }
 
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || partCopy.class != obj.getClass()) {
+            return false;
+        }
+        partCopy p = (partCopy) obj;
+        return this.uniqueID.equals(p.uniqueID) && this.reserverName.equals(p.reserverName) && this.isKeeping == p.isKeeping;
+    }
+
     //this.uniqueID.hashCode();
 
 }
