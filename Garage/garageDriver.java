@@ -180,7 +180,64 @@ public class garageDriver {
     }
 
     public static void borrowPart() {
-        return;
+        Scanner input = new Scanner(System.in);
+        System.out.println("Enter the " + "\033[31m" + "brand" + "\033[0m" + " of the part: ");
+        String brand = input.nextLine().strip();
+
+        System.out.println("Enter the " + "\033[31m" + "model number" + "\033[0m" + " of the part: ");
+        int modelNumber = input.nextInt();
+
+        part currPart = new part(brand, "", modelNumber, 0, "");
+
+        if (!inventory.contains(currPart)) {
+            System.out.println("\033[31m" + "Part does not exist"+ "\033[0m");
+            return;
+        }
+        else {
+            String uniqueID = brand.toUpperCase() + modelNumber;
+            System.out.println("Enter the " + "\033[31m" + "name" + "\033[0m" + " of the borrower: ");
+            input.nextLine();
+            String name = input.nextLine();
+            System.out.println("Is the borrower keeping the item" + "\033[31m" + " (y/n):" + "\033[0m");
+            String selection = input.next().toLowerCase();
+            boolean isKeeping = selection.equals("y");
+
+            for (part p : inventory) {
+                if (p.equals(currPart)) {
+                    if ((p.quantity - p.numBorrowed) <= 0) {
+                        p.isBorrowed = true;
+                        System.out.println("\033[31m" + "Part is out of stock" + "\033[0m");
+                        return;
+                    }
+                    else {
+                        if(isKeeping) {
+                            p.quantity--;
+                        }
+                        else {
+                            p.numBorrowed++;
+                        }
+                        if(p.quantity <= 0) {
+                            p.isBorrowed = false;
+                            /////////ADD TO ORDER QUEUE
+                        }
+
+                        p.addHistory(new String[] { "Borrowed", name });
+
+                        BTnode myBTNODE = binaryTree.search(brand.toUpperCase());
+                        ArrayList<LinkedList<partCopy>> details = (ArrayList<LinkedList<partCopy>>) myBTNODE.data[1];
+                        for(LinkedList<partCopy> partCopies : details) {
+                            if(partCopies.getFirst().uniqueID.equals(uniqueID)) {
+                                partCopies.add(new partCopy(uniqueID, name, isKeeping));
+                                break;
+                            }
+                        }
+
+                        System.out.println("\033[32m" + "Part Borrowed" + "\033[0m");
+                        return;
+                    }
+                }
+            }
+        }
     }
     public static void main(String[] args) {
         //part p1 = (new part("bmw", "taillight", 123, 1, "A1"));
