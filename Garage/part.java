@@ -61,5 +61,24 @@ public class part implements Cloneable {
         return "\033[31m" + this.brand + "\033[0m" + "-" + "\033[33m" + this.modelNumber + "\033[0m" + " " + this.description.toUpperCase()
                 + " |\033[36m " + this.quantity + "\033[35m " + this.location + "\033[0m";
     }
+
+    public void printHistory() {
+        for (String[] history : this.history) {
+            String status = history[0].toLowerCase();
+            switch (status) {
+                case "borrowed":
+                    System.out.println("\033[33m" + history[0].toUpperCase() + "\033[0m" + " by " + history[1]);
+                    break;
+                case "keeping":
+                    System.out.println("\033[31m" + history[0].toUpperCase() + "\033[0m" + " by " + history[1]);
+                    break;
+                case "returned":
+                    System.out.println("\033[32m" + history[0].toUpperCase() + "\033[0m" + " by " + history[1]);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
     
 }

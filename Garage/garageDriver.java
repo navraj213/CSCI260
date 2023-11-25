@@ -17,7 +17,7 @@ public class garageDriver {
         System.out.println("\033[31m" + " 5. " + "\033[0m" + "Return a part");
         System.out.println("\033[31m" + " 6. " + "\033[0m" + "List all parts");
         System.out.println("\033[31m" + " 7. " + "\033[0m" + "List all borrowed parts");
-        System.out.println("\033[31m" + " 8. " + "\033[0m" + "List all parts in a location");
+        System.out.println("\033[31m" + " 8. " + "\033[0m" + "List all history of a part");
         System.out.println("\033[31m" + " 9. " + "\033[0m" + "List all parts of a brand");
         System.out.println("\033[31m" + "10. " + "\033[0m" + "List Quantity of a part");
         System.out.println("\033[31m" + "11. " + "\033[0m" + "Exit");
@@ -66,6 +66,31 @@ public class garageDriver {
                 break;
             case 7:
                 listAllBorrowed();
+                break;
+            case 8:
+                System.out.println("Enter the " + "\033[31m" + "brand" + "\033[0m" + " of the part: ");
+                input.nextLine();
+                String brand = input.nextLine().strip();
+
+                System.out.println("Enter the " + "\033[31m" + "model number" + "\033[0m" + " of the part: ");
+                int modelNumber = input.nextInt();
+
+                part currPart = new part(brand, "", modelNumber, 0, "");
+
+                if (!inventory.contains(currPart)) {
+                    System.out.println("\033[31m" + "Part does not exist"+ "\033[0m");
+                    break;
+                }
+                else {
+                    for (part p : inventory) {
+                        if (p.equals(currPart)) {
+                            System.out.println("Part: " + p + "\033[32m" + "\n\nHistory of Part: " + "\033[0m");
+                            p.printHistory();
+                            break;
+                        }
+                    }
+                }
+                System.out.println();
                 break;
             default:
                 break;
@@ -274,10 +299,31 @@ public class garageDriver {
             for (part p : inventory) {
                 if (p.equals(currPart)) {
                     if (p.numBorrowed <= 0) {
-                        System.out.println("\033[31m" + "No instaces of Part being borrowed" + "\033[0m");
+                        System.out.println("\033[31m" + "No instances of Part being borrowed" + "\033[0m");
                         return;
                     }
                     else {
+                        boolean actualyReturned = false;
+                        partCopy myPartCopy = new partCopy(uniqueID, name, false);
+
+                        BTnode myBTNODE = binaryTree.search(brand.toUpperCase());
+                        ArrayList<LinkedList<partCopy>> details = (ArrayList<LinkedList<partCopy>>) myBTNODE.data[1];
+                        for(LinkedList<partCopy> partCopies : details) {
+                            if(partCopies.getFirst().uniqueID.equals(uniqueID)) {
+                                for(partCopy partCopy : partCopies) {
+                                    if(partCopy.equals(myPartCopy)) {
+                                        actualyReturned = true;
+                                        partCopies.remove(partCopy);
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                        if(!actualyReturned) {
+                            System.out.println("\033[31m" + "Error part was not borrowed by " + name + "\033[0m");
+                            return;
+                        }
                         p.numBorrowed--;
                         if(p.quantity <= 0) {
                             p.isBorrowed = true;
@@ -287,23 +333,6 @@ public class garageDriver {
                         }
 
                         p.addHistory(new String[] { "Returned", name });
-
-                        partCopy myPartCopy = new partCopy(uniqueID, name, false);
-
-                        BTnode myBTNODE = binaryTree.search(brand.toUpperCase());
-                        ArrayList<LinkedList<partCopy>> details = (ArrayList<LinkedList<partCopy>>) myBTNODE.data[1];
-                        for(LinkedList<partCopy> partCopies : details) {
-                            if(partCopies.getFirst().uniqueID.equals(uniqueID)) {
-                                for(partCopy partCopy : partCopies) {
-                                    if(partCopy.equals(myPartCopy)) {
-                                        partCopies.remove(partCopy);
-                                        break;
-                                    }
-                                }
-                                break;
-                            }
-                        }
-
                         System.out.println("\033[32m" + "Part Returned" + "\033[0m");
                         return;
                     }
