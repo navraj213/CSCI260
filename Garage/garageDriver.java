@@ -5,6 +5,7 @@ import java.util.*;
 public class garageDriver {
     public static HashSet<part> inventory = new HashSet<part>();
     public static BT binaryTree = new BT();
+    public static Queue<part> orders = new LinkedList<>();
 
     public static void getOption() {
         clearScreen();
@@ -20,7 +21,9 @@ public class garageDriver {
         System.out.println("\033[31m" + " 8. " + "\033[0m" + "List all history of a part");
         System.out.println("\033[31m" + " 9. " + "\033[0m" + "List all parts of a brand");
         System.out.println("\033[31m" + "10. " + "\033[0m" + "List Quantity of a part");
-        System.out.println("\033[31m" + "11. " + "\033[0m" + "Exit");
+        System.out.println("\033[31m" + "11. " + "\033[0m" + "List parts that need to be ordered");
+
+        System.out.println("\033[31m" + "XXXXX. " + "\033[0m" + "Exit");
 
         Scanner input = new Scanner(System.in);
         int option = -1;
@@ -120,6 +123,9 @@ public class garageDriver {
                 }
                 System.out.println();
                 break;
+            case 11:
+                printQueue();
+                break;
             default:
                 break;
         }
@@ -172,6 +178,10 @@ public class garageDriver {
         part newPart = new part(brand, description, modelNumber, quantity, location);
         inventory.add(newPart);
 
+        if(!orders.contains(newPart) && newPart.quantity <= 0) {
+            orders.add(newPart);
+        }
+
         BTnode myBTNODE;
         if(!binaryTree.doesExist(newPart.brand)) {
             binaryTree.insert(newPart.brand, new ArrayList<LinkedList<partCopy>>());
@@ -202,6 +212,9 @@ public class garageDriver {
         else {
             inventory.remove(currPart);
             System.out.println("\033[32m" + "Part removed" + "\033[0m");
+            if(orders.contains(currPart)) {
+                orders.remove(currPart);
+            }
         }
     }
 
@@ -234,6 +247,12 @@ public class garageDriver {
                 if (p.equals(currPart)) {
                     p.description = description;
                     p.quantity = quantity;
+                    if(p.quantity <= 0 && !orders.contains(p)) {
+                        orders.add(p);
+                    }
+                    else if(p.quantity > 0 && orders.contains(p)) {
+                        orders.remove(p);
+                    }
                     p.location = location;
                     System.out.println("\033[32m" + "Part Updated" + "\033[0m");
                     return;
@@ -268,7 +287,6 @@ public class garageDriver {
             for (part p : inventory) {
                 if (p.equals(currPart)) {
                     if ((p.quantity - p.numBorrowed) <= 0) {
-                        p.isBorrowed = true;
                         System.out.println("\033[31m" + "Part is out of stock" + "\033[0m");
                         return;
                     }
@@ -284,7 +302,9 @@ public class garageDriver {
                             System.out.println("\033[32m" + "Part Borrowed" + "\033[0m");
                         }
                         if(p.quantity <= 0) {
-                            p.isBorrowed = false;
+                            if(!orders.contains(p)) {
+                                orders.add(p);
+                            }
                         }
 
                         BTnode myBTNODE = binaryTree.search(brand.toUpperCase());
@@ -353,12 +373,6 @@ public class garageDriver {
                             return;
                         }
                         p.numBorrowed--;
-                        if(p.quantity <= 0) {
-                            p.isBorrowed = true;
-                        }
-                        else {
-                            p.isBorrowed = false;
-                        }
 
                         p.addHistory(new String[] { "Returned", name });
                         System.out.println("\033[32m" + "Part Returned" + "\033[0m");
@@ -409,6 +423,13 @@ public class garageDriver {
             System.out.println("\033[31m" + brand + "\033[0m-\033[33m" + partCopies.getFirst().uniqueID.substring(brand.length()) + "\033[0m");
         }
         System.out.println();
+    }
+
+    public static void printQueue() {
+        System.out.println("Parts that need to be ordered: ");
+        for(part p : orders) {
+            System.out.println(p);
+        }
     }
 
     public static void main(String[] args) {

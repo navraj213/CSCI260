@@ -9,7 +9,6 @@ public class part implements Cloneable {
     public int quantity;
     public String location;
 
-    public boolean isBorrowed;
     public LinkedList<String[]> history;
     public int numBorrowed; 
     public String uniqueID; 
@@ -22,7 +21,6 @@ public class part implements Cloneable {
         this.location = location.toUpperCase();
 
         this.uniqueID = brand + modelNumber;
-        this.isBorrowed = false;
         this.history = new LinkedList<String[]>();
         this.history.add(new String[] { "Created", "System" });
         this.numBorrowed = 0;
