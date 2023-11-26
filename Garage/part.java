@@ -81,5 +81,9 @@ public class part implements Cloneable {
             }
         }
     }
+
+    public int compareTo(part p2) {
+        return this.quantity - p2.quantity;
+    }
     
 }
