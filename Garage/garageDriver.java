@@ -6,6 +6,7 @@ public class garageDriver {
     public static HashSet<part> inventory = new HashSet<part>();
     public static BT binaryTree = new BT();
     public static Queue<part> orders = new LinkedList<>();
+    public static Hashtable<String, ArrayList<part>> locationTable = new Hashtable<String, ArrayList<part>>();
 
     public static void getOption() {
         clearScreen();
@@ -22,15 +23,15 @@ public class garageDriver {
         System.out.println("\033[31m" + " 9. " + "\033[0m" + "List all parts of a brand");
         System.out.println("\033[31m" + "10. " + "\033[0m" + "List Quantity of a part");
         System.out.println("\033[31m" + "11. " + "\033[0m" + "List parts that need to be ordered");
-
-        System.out.println("\033[31m" + "XXXXX. " + "\033[0m" + "Exit");
+        System.out.println("\033[31m" + "12. " + "\033[0m" + "List parts in a location");
+        System.out.println("\033[31m" + "13. " + "\033[0m" + "Exit");
 
         Scanner input = new Scanner(System.in);
         int option = -1;
         while(true) {
             try {
                 option = input.nextInt();
-                if(option < 1 || option > 11) {
+                if(option < 1 || option > 13) {
                     throw new InputMismatchException();
                 }
                 break;
@@ -126,6 +127,22 @@ public class garageDriver {
             case 11:
                 printQueue();
                 break;
+            case 12:
+                System.out.println("Enter the " + "\033[31m" + "location" + "\033[0m" + " of the part: ");
+                input.nextLine();
+                String location = input.nextLine().strip().toUpperCase();
+
+                if(!locationTable.containsKey(location)) {
+                    System.out.println("\033[31m" + "Location does not exist" + "\033[0m");
+                    break;
+                }
+                else {
+                    System.out.println("Parts in location: " + location);
+                    for(part p : locationTable.get(location)) {
+                        System.out.println(p);
+                    }
+                }
+                break;
             default:
                 break;
         }
@@ -173,7 +190,7 @@ public class garageDriver {
 
         System.out.println("Enter the " + "\033[31m" + "location" + "\033[0m" + " of the part: ");
         input.nextLine();
-        String location = input.nextLine();
+        String location = input.nextLine().toUpperCase().strip();
 
         part newPart = new part(brand, description, modelNumber, quantity, location);
         inventory.add(newPart);
@@ -193,6 +210,15 @@ public class garageDriver {
         addCopy.add(new partCopy(newPart.uniqueID, "", false));
         details.set(details.size() - 1, addCopy);
 
+        if(locationTable.containsKey(newPart.location)) {
+            locationTable.get(newPart.location).add(newPart);
+        }
+        else {
+            ArrayList<part> newLocation = new ArrayList<part>();
+            newLocation.add(newPart);
+            locationTable.put(location, newLocation);
+        }
+
         System.out.println("\033[32m" + "Part Added" + "\033[0m");
     }
 
@@ -210,11 +236,29 @@ public class garageDriver {
             System.out.println("\033[31m" + "Part does not exist"+ "\033[0m");
         }
         else {
+            for(part p : inventory) {
+                if(p.equals(currPart)) {
+                    BTnode myBTNODE = binaryTree.search(brand.toUpperCase());
+                    ArrayList<LinkedList<partCopy>> details = (ArrayList<LinkedList<partCopy>>) myBTNODE.data[1];
+                    for(LinkedList<partCopy> partCopies : details) {
+                        if(partCopies.getFirst().uniqueID.equals(currPart.uniqueID)) {
+                            details.remove(partCopies);
+                            break;
+                        }
+                    }
+
+                    if(locationTable.containsKey(p.location)) {
+                        locationTable.get(p.location).remove(p);
+                    }
+                    break;
+                }
+            }
             inventory.remove(currPart);
             System.out.println("\033[32m" + "Part removed" + "\033[0m");
             if(orders.contains(currPart)) {
                 orders.remove(currPart);
             }
+            
         }
     }
 
@@ -241,10 +285,13 @@ public class garageDriver {
             int quantity = input.nextInt();
             System.out.println("Enter the " + "\033[31m" + "location" + "\033[0m" + " of the part: ");
             input.nextLine();
-            String location = input.nextLine();
+            String location = input.nextLine().toUpperCase().strip();
 
             for (part p : inventory) {
                 if (p.equals(currPart)) {
+                    if(locationTable.containsKey(p.location)) {
+                        locationTable.get(p.location).remove(p);
+                    }
                     p.description = description;
                     p.quantity = quantity;
                     if(p.quantity <= 0 && !orders.contains(p)) {
@@ -254,9 +301,17 @@ public class garageDriver {
                         orders.remove(p);
                     }
                     p.location = location;
-                    System.out.println("\033[32m" + "Part Updated" + "\033[0m");
-                    return;
                 }
+                if(locationTable.containsKey(p.location)) {
+                    locationTable.get(p.location).add(p);
+                }
+                else {
+                    ArrayList<part> newLocation = new ArrayList<part>();
+                    newLocation.add(p);
+                    locationTable.put(p.location, newLocation);
+                }
+                System.out.println("\033[32m" + "Part Updated" + "\033[0m");
+                return;
             }
         }
     }
@@ -293,7 +348,7 @@ public class garageDriver {
                     else {
                         if(isKeeping) {
                             p.quantity--;
-                            p.addHistory(new String[] {"Keeping", name});
+                            p.addHistory(new String[] {"Kept", name});
                             System.out.println("\033[32m" + "Part Kept" + "\033[0m");
                         }
                         else {

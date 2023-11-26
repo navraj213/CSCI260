@@ -1,6 +1,6 @@
 package Garage;
 
-import java.util.LinkedList;
+import java.util.*;
 
 public class part implements Cloneable {
     public String brand;
@@ -9,7 +9,7 @@ public class part implements Cloneable {
     public int quantity;
     public String location;
 
-    public LinkedList<String[]> history;
+    public Stack<String[]> history;
     public int numBorrowed; 
     public String uniqueID; 
 
@@ -18,10 +18,13 @@ public class part implements Cloneable {
         this.description = description;
         this.modelNumber = modelNumber;
         this.quantity = quantity;
-        this.location = location.toUpperCase();
+        if(this.quantity < 0) {
+            this.quantity = 0;
+        }
+        this.location = location.toUpperCase().strip();
 
-        this.uniqueID = brand + modelNumber;
-        this.history = new LinkedList<String[]>();
+        this.uniqueID = (brand + modelNumber).toUpperCase();
+        this.history = new Stack<String[]>();
         this.history.add(new String[] { "Created", "System" });
         this.numBorrowed = 0;
     }
@@ -67,7 +70,7 @@ public class part implements Cloneable {
                 case "borrowed":
                     System.out.println("\033[33m" + history[0].toUpperCase() + "\033[0m" + " by " + history[1]);
                     break;
-                case "keeping":
+                case "kept":
                     System.out.println("\033[31m" + history[0].toUpperCase() + "\033[0m" + " by " + history[1]);
                     break;
                 case "returned":
