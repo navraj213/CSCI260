@@ -21,17 +21,18 @@ public class garageDriver {
         System.out.println("\033[31m" + " 7. " + "\033[0m" + "List all borrowed parts");
         System.out.println("\033[31m" + " 8. " + "\033[0m" + "List all history of a part");
         System.out.println("\033[31m" + " 9. " + "\033[0m" + "List all parts of a brand");
-        System.out.println("\033[31m" + "10. " + "\033[0m" + "List Quantity of a part");
+        System.out.println("\033[31m" + "10. " + "\033[0m" + "List all details of a part");
         System.out.println("\033[31m" + "11. " + "\033[0m" + "List parts that need to be ordered");
         System.out.println("\033[31m" + "12. " + "\033[0m" + "List parts in a location");
-        System.out.println("\033[31m" + "13. " + "\033[0m" + "Exit");
+        System.out.println("\033[31m" + "13. " + "\033[0m" + "List parts in order of quantity");
+        System.out.println("\033[31m" + "14. " + "\033[0m" + "Exit");
 
         Scanner input = new Scanner(System.in);
         int option = -1;
         while(true) {
             try {
                 option = input.nextInt();
-                if(option < 1 || option > 13) {
+                if(option < 1 || option > 14) {
                     throw new InputMismatchException();
                 }
                 break;
@@ -116,8 +117,7 @@ public class garageDriver {
                 else {
                     for (part p : inventory) {
                         if (p.equals(currPart2)) {
-                            System.out.println("Part: " + p + "\033[32m" + "\n\nQuantity of Part: " + "\033[0m");
-                            System.out.println(p.quantity);
+                            System.out.println("Part: " + p + "\033[0m");
                             break;
                         }
                     }
@@ -142,6 +142,20 @@ public class garageDriver {
                         System.out.println(p);
                     }
                 }
+                break;
+            case 13:
+                ArrayList<part> sortedInventory = new ArrayList<part>(inventory);
+                sortByQuantity(sortedInventory);
+                System.out.println("\033[31m" + "BRAND" + "\033[0m" + "-" + "\033[33m" + "MODEL#" + "\033[0m" + " " + "DESCRIPTION"
+                    + " |\033[36m " + "QUANTITY" + "\033[35m " + "LOCATION" + "\033[0m" + " (in terms of quantity)");
+                System.out.println("\033[32m" + "All Parts:" + "\033[0m\n");
+                for (part p : sortedInventory) {
+                    System.out.println(p);
+                }
+                break;
+            case 14:
+                System.out.println("\033[32m" + "Thank you for using the Garage Inventory System" + "\033[0m");
+                System.exit(0);
                 break;
             default:
                 break;
@@ -487,26 +501,26 @@ public class garageDriver {
         }
     }
 
+    public static void sortByQuantity(ArrayList<part> arr) {
+        int n = arr.size();
+
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (arr.get(j).quantity > arr.get(j + 1).quantity) {
+                    // Swap the elements if they are in the wrong order
+                    part temp = arr.get(j);
+                    arr.set(j, arr.get(j + 1));
+                    arr.set(j + 1, temp);
+                }
+            }
+        }
+    }
+
     public static void main(String[] args) {
         //part p1 = (new part("bmw", "taillight", 123, 1, "A1"));
         //inventory.add(p1);
         while (true) {
             getOption();
         }
-        // partCopy myPartCopy = new partCopy("bmw123", "nav", true);
-
-        // BT bt = new BT();
-        // bt.insert("bmw", new ArrayList<partCopy>());
-        // bt.insert("bmw", new ArrayList<partCopy>());
-
-        // BTnode myBTNODE = bt.search("bmw");
-        // ((ArrayList<partCopy>) myBTNODE.data[1]).add(myPartCopy);
-
-        
-
-
-        // System.out.println( bt.search("bmw").getDataDetails() );
-
-
     }
 }
