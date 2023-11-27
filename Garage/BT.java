@@ -1,39 +1,38 @@
-        // Object[] myList = new Object[2];
-        // myList[0] = (String)"Hello";
-        // myList[1] = new ArrayList<Integer>();
-
-        // ((ArrayList<Integer>) myList[1]).add(1);
-        // ((ArrayList<Integer>) myList[1]).add(2);
-        // System.out.println(((ArrayList<Integer>) myList[1]).get(0));
-
-        // System.out.println(myList[0]);
-        // System.out.println(myList[1]);
 package Garage;
-
 import java.util.*;
 
-/* Class BT */
-public class BT
-{
-    private BTnode root;
-    /* Constructor */
-    public BT()
-    {
+/*
+ * Modified version of the Binary Tree class from assignment 8
+ */
+public class BT {
+    private BTnode root; //root node
+
+    public BT() { //constructor
         root = null;
     }
+
     /* Function to check if tree is empty */
-    public boolean isEmpty()
-    {
+    public boolean isEmpty()    {
         return root == null;
     }
-    /* Functions to insert data */
-    public void insert(String brand, ArrayList<LinkedList<partCopy>> details)
-    {
+
+    /* 
+     * Functions to insert data 
+     * Modified to take in a String brand name and 
+     * an arraylist of linked lists of part copies
+    */
+    public void insert(String brand, ArrayList<LinkedList<partCopy>> details)   {
         root = insert(root, brand, details);
     }
-    /* Function to insert data recursively */
-    private BTnode insert(BTnode node, String brand, ArrayList<LinkedList<partCopy>> details)
-    {
+
+    /* Function to insert data recursively 
+     * Modified to take in a String brand name and
+     * an arraylist of linked lists of part copies.
+     * 
+     * It also inserts the data in alphabetical order 
+     * in respect to the brand name.
+    */
+    private BTnode insert(BTnode node, String brand, ArrayList<LinkedList<partCopy>> details) {
         if (node == null)
             node = new BTnode(brand, details);
         else
@@ -46,6 +45,7 @@ public class BT
         }
         return node;
     }
+
     /* Function to count number of nodes */
     public int countNodes()
     {
@@ -64,6 +64,7 @@ public class BT
             return l;
         }
     }
+
     /* Function to search for an element */
     public boolean doesExist(String targetVal)
     {
@@ -73,12 +74,17 @@ public class BT
         return search(targetVal) != null;
     }
 
-    /* Function to search for an element */
+    /* Function to search for an element 
+     * Modified to take in a String brand name and
+     * search for it.
+    */
     public BTnode search(String targetVal)
     {
         return search(root, targetVal);
     }
-    /* Function to search for an element recursively */
+    /* Function to search for an element recursively 
+     * Only compares the brand names
+    */
     private BTnode search(BTnode r, String targetVal)
     {
         if (r == null) {
@@ -94,10 +100,11 @@ public class BT
         return search(r.getRight(), targetVal);
     }
 
-    //make a function called printTree that prints it in the fashion that its organized in in the terminal all formated with spacing and arrows an dstuff
+    /* Function to print the binary tree */
     public void printTree() {
         printTree(root, 0);
     }
+    /* Function to print the binary tree's brand elements */
     private void printTree(BTnode root2, int i) {
         if (root2 == null) {
             return;

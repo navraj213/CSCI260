@@ -2,17 +2,23 @@ package Garage;
 
 import java.util.*;
 
+/*
+ * part class to store part information
+ */
 public class part implements Cloneable {
-    public String brand;
+    //User inputted information
+    public String brand; 
     public String description;
     public int modelNumber;
     public int quantity;
     public String location;
 
-    public Stack<String[]> history;
-    public int numBorrowed; 
-    public String uniqueID; 
+    //System generated information
+    public Stack<String[]> history; // Tracks information [status, user] in a stack (LIFO)
+    public int numBorrowed; // Tracks number of times part has been borrowed
+    public String uniqueID; // Creates a unique ID for each part (brand + modelNumber)
 
+    //Constructor
     public part(String brand, String description, int modelNumber, int quantity, String location) {
         this.brand = brand.toUpperCase();
         this.description = description;
@@ -25,10 +31,10 @@ public class part implements Cloneable {
 
         this.uniqueID = (brand + modelNumber).toUpperCase();
         this.history = new Stack<String[]>();
-        this.history.add(new String[] { "Created", "System" });
         this.numBorrowed = 0;
     }
 
+    // Adds status to history stack
     public void addHistory(String[] history) {
         this.history.add(history);
     }
@@ -45,6 +51,9 @@ public class part implements Cloneable {
         return this.uniqueID.equals(p.uniqueID);
     }
 
+    /*
+     * Generates a hashcode for the part based off of the uniqueID
+     */
     @Override
     public int hashCode() {
         int result = this.uniqueID.hashCode();
@@ -57,12 +66,18 @@ public class part implements Cloneable {
         return (part)super.clone();
     }
 
+    /*
+     * Returns a string representation of the part
+     */
     @Override
     public String toString() {
         return "\033[31m" + this.brand + "\033[0m" + "-" + "\033[33m" + this.modelNumber + "\033[0m" + " " + this.description.toUpperCase()
                 + " |\033[36m " + this.quantity + "\033[35m " + this.location + "\033[0m";
     }
 
+    /*
+     * Prints the history of the part and color codes it based on the status
+     */
     public void printHistory() {
         for (String[] history : this.history) {
             String status = history[0].toLowerCase();
